@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Jogo da forca</title>
+	<style type="text/css">
+		h1{
+			text-align: center;
+		}
+
+		#intro{
+			width: 100%;
+		}
+
+		p{
+			width: 80%;
+			margin: auto;
+			font-size: 1.5em;
+		}
+
+		#tela{
+			width: 100%;
+			text-align: center;
+			padding: 0.5em;
+		}
+
+		#palavra{
+			font-size: 2em;
+			margin-bottom: 0.5em;
+		}
+
+	</style>
+</head>
+<body>
+<h1>Jogo da forca</h1>
+<div id="intro">
+	<!--p>
+		Um jogo da forca interativo e divertido. Você tem 7 chances para acertar a palavra correta.
+	</p-->
+</div>
+
+<div id="tela">
+	<img id="boneco" src="">
+	<div id="palavra"></div>
+	<input id="entrada" type="text" name="">
+	<button id="btnEnviar">Enviar Letra</button>
+</div>
+
+<script type="text/javascript">
+
+		var palavras = ["casa","carro","video-game","bicicleta","escova","cadeira","computador","mesa","panela"];
+		var divPalavra;
+		var imgBoneco;
+		var entrada;
+		var erro;
+		var palavraAtual;
+		var stringAux = new Array;
+		var chuteErro = new Array;
+
+
+		function inicia(){
+			palavraAtual = palavras[Math.floor(Math.random()*palavras.length)];
+			erro = 0;
+			divPalavra = document.getElementById("palavra");
+			imgBoneco = document.getElementById("boneco");
+			entrada = document.getElementById("entrada");
+			btn = document.getElementById("btnEnviar");
+			mudaFoto();
+			for (var i = 0; i < palavraAtual.length; i++){
+			stringAux.push("_");
+			}
+			stringAux.toString();
+			divPalavra.innerHTML = stringAux;
+			btn.addEventListener("click", btnClick);
+		}
+
+		function btnClick() {
+			aux = entrada.value;
+			entrada.value = "";
+			var res = palavraAtual.match(aux);
+			if(res == null){
+				erro += 1;					
+			}else{
+				while(res != null){
+					res = palavraAtual.search(aux);
+					stringAux[res] = aux;
+					divPalavra.innerHTML = stringAux;
+					palavraAtual = palavraAtual.replace(aux,'#');
+					res = palavraAtual.match(aux);
+				}
+			}
+		}
+
+		function mudaFoto(){
+			if (erro == 0){
+				imgBoneco.setAttribute('src', 'img/foto0.png');
+			}else if (erro == 1){
+				imgBoneco.setAttribute('src', 'img/foto1.png');
+			}else if (erro == 2){
+				imgBoneco.setAttribute('src', 'img/foto2.png');
+			}else if (erro == 3){
+				imgBoneco.setAttribute('src', 'img/foto3.png');
+			}else if (erro == 4){
+				imgBoneco.setAttribute('src', 'img/foto4.png');
+			}else if (erro == 5){
+				imgBoneco.setAttribute('src', 'img/foto5.png');
+			}else if (erro == 6){
+				imgBoneco.setAttribute('src', 'img/foto6.png');
+			}else{
+				imgBoneco.setAttribute('src', 'img/foto7.png');
+			}
+			jogada = requestAnimationFrame(mudaFoto);
+		}
+		window.addEventListener("load", inicia);
+</script>
+</body>
+</html>
